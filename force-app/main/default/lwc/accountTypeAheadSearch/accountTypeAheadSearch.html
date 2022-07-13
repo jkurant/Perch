@@ -1,0 +1,18 @@
+<template>
+  <article class="slds-card slds-var-p-around_small">
+    <h1>Account Type-Ahead Search Demo LWC</h1>
+    <div>
+      <lightning-input label="Search for account" id="searchFor" onkeyup={handleKeyUp} value={searchString}></lightning-input>
+    </div>
+
+    <template if:true={showResults}>
+      <h2>Search Results:</h2>
+      <template for:each={searchResults} for:item="searchResult">
+        <p key={searchResult.key}><a href='{searchResult.link}' target="_blank">{searchResult.name}</a></p>
+      </template>
+      <template if:false={searchResults.length}>
+        <h2>No matching accounts</h2>
+      </template>
+    </template>
+  </article>
+</template>

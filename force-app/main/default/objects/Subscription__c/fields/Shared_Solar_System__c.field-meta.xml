@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Shared_Solar_System__c</fullName>
+    <description>The solar energy generating facility to which the customer is subscribed</description>
+    <externalId>false</externalId>
+    <inlineHelpText>The solar energy generating facility to which the customer is subscribed</inlineHelpText>
+    <label>Shared Solar System</label>
+    <referenceTo>Shared_Solar_System__c</referenceTo>
+    <relationshipLabel>Subscription</relationshipLabel>
+    <relationshipName>Subscription</relationshipName>
+    <relationshipOrder>0</relationshipOrder>
+    <reparentableMasterDetail>false</reparentableMasterDetail>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>MasterDetail</type>
+    <writeRequiresMasterRead>false</writeRequiresMasterRead>
+</CustomField>
