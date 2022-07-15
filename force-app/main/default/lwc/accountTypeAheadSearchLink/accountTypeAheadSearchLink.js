@@ -9,7 +9,7 @@ export default class AccountTypeAheadSearchLink extends LightningElement {
   get indentSpaces() {
     let spaces = '';
     for (let i = 0; i < this.indentlevel; i++) {
-      spaces += '&nbsp;'
+      spaces += '      '
     }
     //console.log('indentlevel = ' + this.indentlevel + '; spaces = [' + spaces + ']');
     return spaces;

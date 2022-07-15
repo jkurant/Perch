@@ -8,9 +8,12 @@
     <template if:true={showResults}>
       <h2>Search Results:</h2>
       <template for:each={searchResults} for:item="searchResult">
-        <!-- <p key={searchResult.key}><a href='{searchResult.link}' target="_blank">{searchResult.name}</a></p> -->
-        <c-account-type-ahead-search-link indentlevel='3' key={searchResult.key} link={searchResult.link} name={searchResult.name}>
+        <c-account-type-ahead-search-link indentlevel='0' key={searchResult.key} link={searchResult.link} name={searchResult.name}>
         </c-account-type-ahead-search-link>
+        <template for:each={searchResult.contacts} for:item="searchContact">
+          <c-account-type-ahead-search-link indentlevel='1' key={searchContact.key} link={searchContact.link} name={searchContact.name}>
+          </c-account-type-ahead-search-link>
+        </template>
       </template>
       <template if:false={searchResults.length}>
         <h2>No matching accounts</h2>
