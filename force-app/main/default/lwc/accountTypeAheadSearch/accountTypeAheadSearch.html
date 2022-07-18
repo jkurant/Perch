@@ -3,6 +3,11 @@
     <h1>Account Type-Ahead Search Demo LWC</h1>
     <div>
       <lightning-input label="Search for account" id="searchFor" onkeyup={handleKeyUp} value={searchString}></lightning-input>
+      <lightning-checkbox-group label="Show contacts" id="showContactsCheckbox" onchange={handleShowContactChange}
+        options={contactsOptions} value={showContactsValue}
+      >
+
+      </lightning-checkbox-group>
     </div>
 
     <template if:true={showResults}>

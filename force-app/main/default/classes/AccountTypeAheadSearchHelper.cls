@@ -9,19 +9,28 @@ public with sharing class AccountTypeAheadSearchHelper {
      * @return an array of MatchingAccountsWrappers
      */
     @AuraEnabled
-    public static MatchingAccountsWrapper[] getMatchingAccounts(String searchString) {
+    public static MatchingAccountsWrapper[] getMatchingAccounts(String searchString, Boolean showContacts) {
         String searchSpec = '%' + searchString + '%';
-        List<Account> accountsFound = [
-            SELECT Id, Name,
-                (SELECT Id, Name FROM Contacts ORDER BY Name) 
-            FROM Account 
-            WHERE Name LIKE :searchSpec 
-            ORDER BY Name];
+        List<Account> accountsFound;
+        if (showContacts) {
+            accountsFound = [
+                SELECT Id, Name,
+                    (SELECT Id, Name FROM Contacts ORDER BY Name) 
+                FROM Account 
+                WHERE Name LIKE :searchSpec 
+                ORDER BY Name];
+        } else {
+            accountsFound = [
+                SELECT Id, Name
+                FROM Account 
+                WHERE Name LIKE :searchSpec 
+                ORDER BY Name];
+        }
 
         List<MatchingAccountsWrapper> matchingAccounts = new List<MatchingAccountsWrapper>();
         for (Account ma : accountsFound) {
-            //MatchingAccountsWrapper mar = new MatchingAccountsWrapper(ma);
-            MatchingAccountsWrapper mar = new MatchingAccountsWrapper(ma.Id, ma.Name, ma.Contacts);
+
+            MatchingAccountsWrapper mar = new MatchingAccountsWrapper(ma.Id, ma.Name, showContacts ? ma.Contacts: null);
             matchingAccounts.add(mar);
             system.debug('#@# matching account.name = ' + ma.Name);
         }
@@ -61,12 +70,16 @@ public with sharing class AccountTypeAheadSearchHelper {
 
         @AuraEnabled
         public List<MatchingContactsWrapper> contacts {get {
-            List<MatchingContactsWrapper> matchingContacts = new List<MatchingContactsWrapper>();
-            for (Contact matchingContact : relatedContacts) {
-                MatchingContactsWrapper mac = new MatchingContactsWrapper(matchingContact);
-                matchingContacts.add(mac);
+            if (relatedContacts != null) {
+                List<MatchingContactsWrapper> matchingContacts = new List<MatchingContactsWrapper>();
+                for (Contact matchingContact : relatedContacts) {
+                    MatchingContactsWrapper mac = new MatchingContactsWrapper(matchingContact);
+                    matchingContacts.add(mac);
+                }
+                return matchingContacts;
+            } else {
+                return null;
             }
-            return matchingContacts;
         } set;}
     }
 

@@ -6,38 +6,54 @@ export default class AccountTypeAheadSearch extends LightningElement {
   searchString = '';
   @api searchResults = [];
   @api showResults = false;
+  showContacts = false;
+  showContactsValue = ['showContactsYes'];
 
   connectedCallback() {
     console.log('connectedCallback BEGIN');
     this.showResults = false;
+    this.showContacts = true;
     console.log('connectedCallback END');
+  }
+
+  get contactsOptions() {
+    return [
+      { label: 'Show Contacts', value: 'showContactsYes' }
+    ];
+  }
+
+  handleShowContactChange(event) {
+    const val = event.target.value;
+    if (val == 'showContactsYes') {
+      this.showContacts = true;
+    } else {
+      this.showContacts = false;
+    }
+    this.refreshSearchResults();
   }
 
   handleKeyUp(event) {
     const val = event.target.value;
-    if (val) {
-      getMatchingAccounts({ searchString: val })
+    this.searchString = val;
+    this.refreshSearchResults();
+  }
+
+  refreshSearchResults() {
+    if (this.searchString) { 
+      getMatchingAccounts({ searchString: this.searchString, showContacts: this.showContacts })
         .then(result => {
           this.showResults = true;
           this.searchResults = result;
         })
         .catch(error => {
           this.showResults = false;
-          //alert('error in loadFormData(): JSON.serialize(error) = ' + JSON.stringify(error));
-          //alert('error in loadFormData(): error.body.message = ' + error.body.message);
           console.log('Error in handleKeyUp');
           console.log(error);
-          // this.error = error.body.message;
-          // if (this.error == '*RelatedRecordNotFound*') this.error = this.relatedRecordNotFoundMessage;
-          // thiss.showSpinner = false;
-          // this.isError = true;
         });
     } else {
       this.showResults = false;
     }
-
   }
 
 
-
-}
+} 
